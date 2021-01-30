@@ -18,16 +18,23 @@ exports.index = (req, res) => {
 exports.add = function (req, res) {
     var history = new History();
     history.id = v4();
-    history.userID = req.body.userID;
-    history.save(function (err) {
-        if (err)
-            res.json(err);
-        res.json({
-            status: "success",
-            message: "New history Added!",
-            data: history
+    if (req.body.userID) {
+        history.userID = req.body.userID;
+        history.save(function (err) {
+            if (err)
+                res.json(err);
+            res.json({
+                status: "success",
+                message: "New history Added!",
+                data: history
+            });
         });
-    });
+    } else {
+        res.json({
+            status: "fail",
+            message: "userID require"
+        })
+    }
 };
 
 exports.update = function (req, res) {

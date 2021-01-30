@@ -74,7 +74,7 @@ const Users = () => {
                     <QRCode
                         id="QRCode"
                         level="Q"
-                        style={{ width: 256, marginTop:5 }}
+                        style={{ width: 256, marginTop: 5 }}
                         value={JSON.stringify({
                             id: user.id,
                             name: user.name,
@@ -101,6 +101,7 @@ const Users = () => {
                 data.data.forEach(
                     (userData, index) => userArr.push(
                         {
+                            id: userData.id,
                             no: index + 1,
                             name: userData.name,
                             nrc: userData.nrc,

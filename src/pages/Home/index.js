@@ -24,6 +24,7 @@ function Home() {
         setOpenDialog(true);
     }
     const checkInNow = (id) => {
+        console.log("user id:", id)
         const checkedInData = state.checkedInUsers.find((data, index) => data.userID === id);
         if (!checkedInData) {
             const bodyData = {
@@ -36,6 +37,7 @@ function Home() {
             })
                 .then(response => response.json())
                 .then(data => {
+                    console.log("Checkin Result:", data);
                     if (data.status === 'success') {
                         dispatch(checkInUser([...state.checkedInUsers, { id: data.data.id, userID: data.data.userID }]))
                         alert('User checkin successful!')
@@ -65,7 +67,7 @@ function Home() {
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (data === 'success') {
+                    if (data.status === 'success') {
                         setCheckOut(false);
                         dispatch(checkInUser(state.checkedInUsers.filter(data => data.userID !== id)));
                         alert('User checkout successful!');
