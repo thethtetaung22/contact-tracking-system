@@ -15,7 +15,7 @@ var HistorySchema = mongoose.Schema({
     },
     checkedOut_at: {
         type: Date,
-        default: Date.now
+        default: null
     }
 });
 var History = module.exports = mongoose.model('histories', HistorySchema);

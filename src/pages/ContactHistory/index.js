@@ -83,7 +83,7 @@ const History = () => {
                                     phone: user.phone,
                                     address: user.address,
                                     checked_in: new Date(historyData.checkedIn_at).toLocaleString(),
-                                    checked_out: new Date(historyData.checkedOut_at).toLocaleString()
+                                    checked_out: historyData.checkedOut_at ? new Date(historyData.checkedOut_at).toLocaleString() : 'N/A'
                                 }
                             )
                         });
