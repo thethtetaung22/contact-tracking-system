@@ -11,9 +11,10 @@ import {
     TableCell,
     TableBody,
     TablePagination,
-    Button
+    IconButton
 } from '@material-ui/core'
 import RegisterNewUser from '../RegisterNewUser';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const History = () => {
     const classes = useStyles();
@@ -29,7 +30,8 @@ const History = () => {
         { id: 'phone', label: 'Phone', minWidth: 100 },
         { id: 'address', label: 'Address', minWidth: 100 },
         { id: 'checked_in', label: 'Checked In', minWidth: 100 },
-        { id: 'checked_out', label: 'Checked Out', minWidth: 100 }
+        { id: 'checked_out', label: 'Checked Out', minWidth: 100 },
+        { id: 'delete', label: 'Delete', minWidth: 70 }
     ];
 
     const handleChangePage = (event, newPage) => {
@@ -40,6 +42,22 @@ const History = () => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+
+    const handleDelete = async (row) => {
+        console.log(row);
+        fetch('http://localhost:4000/api/history', {
+            method: "DELETE",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: row['_id'] })
+        }).then(response => response.json())
+        .then(data => {
+            alert('History remove success!');
+        })
+        .catch(err => {
+            console.log(err);
+            alert('History remove failed!');
+        });
+    }
 
     useEffect(() => {
         fetch('http://localhost:4000/api/user', {
@@ -58,13 +76,14 @@ const History = () => {
                             const user = users.find(userData => userData.id === historyData.userID);
                             allHistories.push(
                                 {
+                                    _id: historyData._id,
                                     no: index + 1,
                                     name: user.name,
                                     nrc: user.nrc,
                                     phone: user.phone,
                                     address: user.address,
                                     checked_in: new Date(historyData.checkedIn_at).toLocaleString(),
-                                    checked_out : new Date(historyData.checkedOut_at).toLocaleString()
+                                    checked_out: new Date(historyData.checkedOut_at).toLocaleString()
                                 }
                             )
                         });
@@ -100,7 +119,7 @@ const History = () => {
                                             align={column.align}
                                             style={{ minWidth: column.minWidth }}
                                         >
-                                            {column.label}
+                                            { column.label }
                                         </TableCell>
                                     ))}
                                 </TableRow>
@@ -115,7 +134,11 @@ const History = () => {
                                                         const value = row[column.id];
                                                         return (
                                                             <TableCell key={column.id} align={column.align}>
-                                                                {column.format && typeof value === 'number' ? column.format(value) : value}
+                                                                {   
+                                                                    column.id === 'delete' ? 
+                                                                    <IconButton key={row['_id']} onClick={() => handleDelete(row)}> <DeleteIcon /> </IconButton>:
+                                                                    column.format && typeof value === 'number' ? column.format(value) : value
+                                                                }
                                                             </TableCell>
                                                         );
                                                     })

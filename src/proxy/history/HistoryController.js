@@ -22,16 +22,18 @@ exports.add = function (req, res) {
     if (req.body.userID) {
         history.userID = req.body.userID;
         history.save(function (err) {
-            if (err)
-                res.json(err);
-            res.json({
+            if (err) {
+                return res.json(err);
+            }
+
+            return res.json({
                 status: "success",
                 message: "New history Added!",
                 data: history
             });
         });
     } else {
-        res.json({
+        return res.json({
             status: "fail",
             message: "userID require"
         })
@@ -39,23 +41,25 @@ exports.add = function (req, res) {
 };
 
 exports.remove = function (req, res) {
-    const history = History.findOne(req.body.id);
-    if (history) {
-        console.log(history);
-        History.remove({ id: req.body.id }, function (err) {
-            if (err)
-                res.json(err);
-            res.json({
+    console.log(req.body)
+    if (req?.body?.id) {
+        History.findByIdAndDelete(req.body.id, function (err, data) {
+            if (err) {
+                return res.json({
+                    status: "failed!",
+                    message: "History not found or deleted!"
+                });
+            }
+            return res.json({
                 status: "success",
-                message: "History deleted!",
-                data: history
+                message: "History deleted!"
             });
         });
     } else {
-        res.json({
-            status: "fail",
-            message: "History not found."
-        })
+        return res.json({
+            status: "failed",
+            message: "History id is required!"
+        });
     }
 };
 
@@ -68,9 +72,12 @@ exports.update = function (req, res) {
             const history = data[0];
             history.checkedOut_at = Date.now();
             history.save(function (err) {
-                if (err)
-                    res.json(err)
-                res.json({
+
+                if (err) {
+                    return res.json(err);
+                }
+
+                return res.json({
                     status: 'success',
                     message: "History Updated Successfully",
                     data: history

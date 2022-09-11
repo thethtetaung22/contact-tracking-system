@@ -26,7 +26,6 @@ function Home() {
     }
 
     const checkInNow = (id) => {
-        console.log("user id:", id)
         const checkedInData = state.checkedInUsers.find((data, index) => data.userID === id);
         if (!checkedInData) {
             const bodyData = {
@@ -151,4 +150,4 @@ const useStyles = makeStyles({
         width: 250,
         marginTop: 20
     }
-})
+});
