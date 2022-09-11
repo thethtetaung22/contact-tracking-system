@@ -20,6 +20,7 @@ router.route('/user')
 
 router.route('/history')
     .get(historyController.index)
+    .delete(historyController.remove)
     .post(historyController.add)
     .patch(historyController.update);
 

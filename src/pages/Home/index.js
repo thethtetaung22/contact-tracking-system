@@ -21,8 +21,10 @@ function Home() {
     const [isCheckOut, setCheckOut] = useState(false);
 
     const handleOnClick = () => {
+        setCheckOut(false);
         setOpenDialog(true);
     }
+
     const checkInNow = (id) => {
         console.log("user id:", id)
         const checkedInData = state.checkedInUsers.find((data, index) => data.userID === id);

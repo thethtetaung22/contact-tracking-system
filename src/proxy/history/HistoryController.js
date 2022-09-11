@@ -1,5 +1,6 @@
 const History = require('./HistoryModel');
 const { v4 } = require('uuid');
+
 exports.index = (req, res) => {
     History.get((err, histories) => {
         if (err)
@@ -33,6 +34,27 @@ exports.add = function (req, res) {
         res.json({
             status: "fail",
             message: "userID require"
+        })
+    }
+};
+
+exports.remove = function (req, res) {
+    const history = History.findOne(req.body.id);
+    if (history) {
+        console.log(history);
+        History.remove({ id: req.body.id }, function (err) {
+            if (err)
+                res.json(err);
+            res.json({
+                status: "success",
+                message: "History deleted!",
+                data: history
+            });
+        });
+    } else {
+        res.json({
+            status: "fail",
+            message: "History not found."
         })
     }
 };
